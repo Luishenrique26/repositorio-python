@@ -1,4 +1,3 @@
-from src.domain.entities.user_entity import UserEntity
 from src.repositories.user_repository import UserRepository
 from bcrypt import checkpw
 class AuthService:
