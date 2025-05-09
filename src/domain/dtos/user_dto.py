@@ -16,3 +16,6 @@ class UserDTO:
             raise ValueError('Password is required')
         if len(self.password) < 8:
             raise ValueError('Password must be at least 8 characters')
+        
+        if self.username == self.password:
+            raise ValueError('Username and password must be different')
