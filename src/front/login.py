@@ -1,5 +1,6 @@
 from tkinter import Button, Entry, Label, Tk, messagebox
 from src.domain.dtos.user_dto import UserDTO
+from src.services.auth_service import AuthService
 from .activies import ListarActivies
 from .register import Register
 class Login:
@@ -34,6 +35,8 @@ class Login:
 
         try:
             data.validate()
+            service = AuthService()
+            service.login(data.username, data.password)
             messagebox.showinfo("Login bem-sucedido", "Bem-vindo, admin!")
             self.master.destroy()
             self.open_window()

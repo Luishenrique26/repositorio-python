@@ -1,6 +1,7 @@
 from tkinter import Button, Entry, Label, Tk, messagebox
 
 from src.domain.dtos.user_dto import UserDTO
+from src.services.user_service import UserService
 from .activies import ListarActivies
 
 
@@ -32,6 +33,8 @@ class Register:
 
         try:
             data.validate()
+            service = UserService()
+            service.create_user(data)
             messagebox.showinfo("Login bem-sucedido", "Bem-vindo, admin!")
             self.master.destroy()
             self.open_window(ListarActivies)

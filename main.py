@@ -1,17 +1,14 @@
 from database.migrations import run_migrations
+from src.front.login import Login
+from tkinter import Tk
+
 
 def main():
     run_migrations()
-    # dto = UserDTO.create(username='admin', password='admin987654')
-    # try: 
-    #     dto.validate()
-    #     user_service = UserService()
-    #     data = user_service.create_user(dto)
-    #     print(data)
-    # except ValueError as e:
-    #     print(e)
-    
+    root = Tk()
+    jn = Login(root)
+    root.mainloop()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
