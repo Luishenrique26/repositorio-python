@@ -1,9 +1,11 @@
 from tkinter import Button, Entry, Label, Tk, messagebox
-from src.domain.dtos.user_dto import UserDTO
-from src.services.auth_service import AuthService
-from .activies import ListarActivies
+from src.domain.dtos import LoginDTO
+from src.services import AuthService
+from .activies import ListActivies
 from .register import Register
-class Login:
+from src.common.base import TkinterBase
+
+class Login(TkinterBase):
     def __init__(self, master: Tk):
         self.master = master
         self.master.title("Tela de Login")
@@ -21,35 +23,25 @@ class Login:
         self.label_password.pack(pady=(10, 5))
         self.entry_password = Entry(master, show="*")
         self.entry_password.pack()
-        
+
         # Botão de login
         self.button_login = Button(master, text="Entrar", command=self.login)
         self.button_login.pack(pady=20)
 
         # Botão de cadastro
-        self.button_register = Button(master, text="Cadastrar", command=self.register)
+        self.button_register = Button(master, text="Cadastrar", command=lambda: self.open_window(Register))
         self.button_register.pack(pady=20)
 
     def login(self):
-        data = UserDTO.create(self.entry_username.get(), self.entry_password.get())
+        data = LoginDTO.create(self.entry_username.get(), self.entry_password.get())
 
         try:
             data.validate()
             service = AuthService()
             service.login(data.username, data.password)
-            messagebox.showinfo("Login bem-sucedido", "Bem-vindo, admin!")
+            messagebox.showinfo("Login bem-sucedido", f"Bem-vindo {data.username}!")
             self.master.destroy()
-            self.open_window()
+            self.open_window(ListActivies, destroy=True)
         except ValueError as e:
             messagebox.showerror("Login falhou", f"{e}")
 
-    def open_window(self):
-        new_window = Tk()
-        app = ListarActivies(new_window)
-        return
-
-    def register(self):
-        self.master.destroy()
-        new_window = Tk()
-        register = Register(new_window)
-        return
