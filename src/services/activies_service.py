@@ -1,6 +1,6 @@
-from src.domain.dtos.activies_dto import ActiviesDTO
-from src.domain.entities.activies_entity import ActiviesEntity
-from src.repositories.activies_repository import ActiviesRepository
+from src.domain.dtos import ActiviesDTO
+from src.domain.entities import ActiviesEntity
+from src.repositories import ActiviesRepository
 
 
 class ActiviesService:

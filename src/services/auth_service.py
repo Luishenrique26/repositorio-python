@@ -1,4 +1,4 @@
-from src.repositories.user_repository import UserRepository
+from src.repositories import UserRepository
 from bcrypt import checkpw
 
 
@@ -11,7 +11,7 @@ class AuthService:
         if not user:
             raise ValueError("Usuário não encontrado")
 
-        if not checkpw(password.encode("utf-8"), user.get("password").encode("utf-8")):
+        if not checkpw(password.encode("utf-8"), user["password"].encode()):
             raise ValueError("Senha inválida")
 
         return user

@@ -1,6 +1,6 @@
-from src.repositories.user_repository import UserRepository
-from src.domain.entities.user_entity import UserEntity
-from src.domain.dtos.user_dto import UserDTO
+from src.repositories import UserRepository
+from src.domain.entities import UserEntity
+from src.domain.dtos import UserDTO
 from bcrypt import gensalt, hashpw
 from random import randint
 
@@ -16,7 +16,7 @@ class UserService:
             raise ValueError("User already exists")
 
         dto.password = hashpw(
-            dto.password.encode("utf-8"), gensalt(rounds=randint(10, 14))
-        ).decode("utf-8")
+            dto.password.encode(), gensalt(rounds=randint(10, 14))
+        ).decode()
         entity = UserEntity.create(dto)
         return self.user_repository.create(entity)
