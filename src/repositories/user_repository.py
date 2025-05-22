@@ -1,5 +1,5 @@
 from database.config import conection_db
-from src.domain.entities.user_entity import UserEntity
+from src.domain.entities import UserEntity
 
 
 class UserRepository:
@@ -11,14 +11,16 @@ class UserRepository:
             """,
                 (username,),
             ).fetchone()
+            print(query)
         return (
             None
             if not query
             else {
                 "user_id": query[0],
                 "username": query[1],
-                "password": query[2],
-                "created_at": query[3],
+                "email": query[2],
+                "password": query[3],
+                "created_at": query[4],
             }
         )
 
@@ -26,14 +28,15 @@ class UserRepository:
         with conection_db() as cursor:
             query = cursor.execute(
                 """
-                INSERT INTO users (username, password, created_at) VALUES (?, ?, ?)
+                INSERT INTO users (username, email, password, created_at) VALUES (?, ?, ?, ?)
                 RETURNING *
             """,
-                (entity.username, entity.password, entity.created_at),
+                (entity.username, entity.email, entity.password, entity.created_at),
             ).fetchone()
         return {
             "user_id": query[0],
             "username": query[1],
-            "password": query[2],
-            "created_at": query[3],
+            "email": query[2],
+            "password": query[3],
+            "created_at": query[4],
         }

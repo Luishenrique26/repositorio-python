@@ -1,5 +1,5 @@
 from database.config import conection_db
-from src.domain.entities.activies_entity import ActiviesEntity
+from src.domain.entities import ActiviesEntity
 
 
 class ActiviesRepository:
