@@ -5,13 +5,14 @@ from src.services import ActiviesService
 from src.common.base import TkinterBase
 # Dados simulados
 
+
 class AddActivitie(TkinterBase):
     def __init__(self, master: Tk):
         self.master = master
 
         self.master.title("Adicionar atividade")
         self.master.geometry("900x400")
-        self.master.resizable(False, False)
+        self.master.resizable(True, True)
 
         self.label_name = Label(self.master, text="Nome da Atividade:")
         self.label_name.grid(row=0, column=0, padx=5, pady=5)
@@ -49,9 +50,10 @@ class AddActivitie(TkinterBase):
         #     ),
         # )
 
-        self.button_add = Button(self.master, text="Adicionar", command=self.add_activitie)
+        self.button_add = Button(
+            self.master, text="Adicionar", command=self.add_activitie
+        )
         self.button_add.grid(row=3, column=0, columnspan=2, padx=5, pady=5)
-
 
     def add_activitie(self):
         name = self.entry_name.get()
@@ -63,22 +65,29 @@ class AddActivitie(TkinterBase):
             dto.validate()
             service = ActiviesService()
             service.create_activie(dto)
-            messagebox.showinfo("Cadastro bem-sucedido", "Atividade cadastrada com sucesso!")
+            messagebox.showinfo(
+                "Cadastro bem-sucedido", "Atividade cadastrada com sucesso!"
+            )
             self.master.destroy()
             self.open_window(ListActivies, destroy=True)
         except ValueError as e:
-            messagebox.showerror("Cadastro falhou", f"{e}") 
+            messagebox.showerror("Cadastro falhou", f"{e}")
+
 
 class ListActivies(TkinterBase):
     def __init__(self, master: Tk):
         self.master = master
         self.master.title("Lista de atividades")
         self.master.geometry("900x400")
-        self.master.resizable(False, False)
+        self.master.resizable(True, True)
 
         self.rows = []
 
-        self.btn_add = Button(self.master, text="Adicionar", command=lambda: self.open_window(AddActivitie))
+        self.btn_add = Button(
+            self.master,
+            text="Adicionar",
+            command=lambda: self.open_window(AddActivitie),
+        )
         self.btn_add.grid(row=0, column=0, padx=5, pady=5)
 
         self.render_header()
@@ -95,7 +104,7 @@ class ListActivies(TkinterBase):
         service = ActiviesService()
         data = service.get_activies()
         if not data:
-            return 
+            return
         for idx, item in enumerate(data):
             self.add_row(item, idx + 1)
 

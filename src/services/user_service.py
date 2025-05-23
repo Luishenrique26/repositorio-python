@@ -13,7 +13,7 @@ class UserService:
         user_exists = self.user_repository.get_user(dto.username)
 
         if user_exists:
-            raise ValueError("User already exists")
+            raise ValueError("Usuário ja cadastrado")
 
         dto.password = hashpw(
             dto.password.encode(), gensalt(rounds=randint(10, 14))

@@ -5,6 +5,7 @@ from .activies import ListActivies
 from .register import Register
 from src.common.base import TkinterBase
 
+
 class Login(TkinterBase):
     def __init__(self, master: Tk):
         self.master = master
@@ -29,7 +30,9 @@ class Login(TkinterBase):
         self.button_login.pack(pady=20)
 
         # Botão de cadastro
-        self.button_register = Button(master, text="Cadastrar", command=lambda: self.open_window(Register))
+        self.button_register = Button(
+            master, text="Cadastrar", command=lambda: self.open_window(Register)
+        )
         self.button_register.pack(pady=20)
 
     def login(self):
@@ -44,4 +47,3 @@ class Login(TkinterBase):
             self.open_window(ListActivies, destroy=True)
         except ValueError as e:
             messagebox.showerror("Login falhou", f"{e}")
-

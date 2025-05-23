@@ -14,7 +14,7 @@ class ActiviesService:
         activie_exists = self.activies_repository.get_activie(dto.name)
 
         if activie_exists:
-            raise ValueError("Activie already exists")
+            raise ValueError("Atividade ja cadastrada")
 
         entity = ActiviesEntity.create(dto)
         return self.activies_repository.create(entity)
@@ -23,7 +23,7 @@ class ActiviesService:
         activie_exists = self.activies_repository.get_activie(dto.name)
 
         if not activie_exists:
-            raise ValueError("Activie not found")
+            raise ValueError("Atividade não encontrada")
 
         entity = ActiviesEntity.create(dto)
         return self.activies_repository.update(entity, id)

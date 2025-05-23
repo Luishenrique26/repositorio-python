@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+import re
 
 @dataclass
 class UserDTO:
@@ -18,6 +18,9 @@ class UserDTO:
         if not self.email:
             raise ValueError("Campo de email obrigatório")
 
+        if re.match(r'/^\S+@\S+\.\S+$/', self.email):
+            raise ValueError("Campo de email inválido")
+
         if not self.password:
             raise ValueError("Campo de senha obrigatória")
 
@@ -25,4 +28,6 @@ class UserDTO:
             raise ValueError("O campo de senha deve ter pelo menos 8 caracteres")
 
         if self.username == self.password:
-            raise ValueError("Username and password must be different")
+            raise ValueError(
+                "O campo de senha deve ser diferente do campo de nome de usuário"
+            )

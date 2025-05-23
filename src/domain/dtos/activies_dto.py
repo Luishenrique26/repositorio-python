@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import date
 
+
 @dataclass
 class ActiviesDTO:
     name: str
@@ -15,16 +16,16 @@ class ActiviesDTO:
 
     def validate(self) -> None:
         if not self.name:
-            raise ValueError("Name is required")
-        
+            raise ValueError("Campo de nome de atividade é obrigatório")
+
         if not self.start_date:
-            raise ValueError("Start date is required")
-        
+            raise ValueError("Campo de data de inicio é obrigatório")
+
         if len(self.start_date) < 8 or len(self.start_date) > 8:
-            raise ValueError("Start date invalid") 
-        
+            raise ValueError("Campo de data de inicio é invalido")
+
         if not self.end_date:
-            raise ValueError("End date is required")
+            raise ValueError("Campo de data de fim é obrigatório")
 
         if len(self.end_date) < 8 or len(self.end_date) > 8:
-            raise ValueError("End date invalid")
+            raise ValueError("Campo de data de fim é invalido")

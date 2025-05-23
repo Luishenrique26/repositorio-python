@@ -4,6 +4,7 @@ from src.services import UserService
 from .activies import ListActivies
 from src.common.base import TkinterBase
 
+
 class Register(TkinterBase):
     def __init__(self, master: Tk):
         self.master = master
@@ -42,7 +43,7 @@ class Register(TkinterBase):
             data.validate()
             service = UserService()
             service.create_user(data)
-            messagebox.showinfo("Cadastro bem-sucedido", "Bem-vindo, admin!")
+            messagebox.showinfo("Cadastro bem-sucedido", f"Bem-vindo, {data.username}!")
             self.master.destroy()
             self.open_window(ListActivies, destroy=True)
         except ValueError as e:
