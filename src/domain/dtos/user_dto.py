@@ -18,7 +18,7 @@ class UserDTO:
         if not self.email:
             raise ValueError("Campo de email obrigatório")
 
-        if re.match(r'/^\S+@\S+\.\S+$/', self.email):
+        if re.match(r'^\S+@\S+\.\S+$', self.email) is None:
             raise ValueError("Campo de email inválido")
 
         if not self.password:

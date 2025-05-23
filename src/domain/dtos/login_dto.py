@@ -16,6 +16,3 @@ class LoginDTO:
 
         if not self.password:
             raise ValueError("Campo de senha obrigatória")
-
-        if not len(self.password) < 8:
-            raise ValueError("O campo de senha deve ter pelo menos 8 caracteres")
