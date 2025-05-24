@@ -157,7 +157,7 @@ class ListActivies(TkinterBase):
 
     def update_item(self, item):
         
-        self.open_window(UpdateActivitie, False, item=item)
+        self.open_window(UpdateActivitie, True, item=item)
         print(f"Atualizar item: {item['activitie_id']}")
 
     def delete_row(self, row_idx):
@@ -259,7 +259,7 @@ class UpdateActivitie(TkinterBase):
             service.update_activie(data, data.activitie_id)
             messagebox.showinfo("Sucesso", "Atividade atualizada com sucesso!")
             self.master.destroy()
-            self.open_window(ListActivies, destroy=True)
+            #self.open_window(ListActivies, destroy=True)
         except (ValidationError,ValueError) as e:
             if type(e) == ValueError:
                 messagebox.showerror("Erro", f"{e}")
