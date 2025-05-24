@@ -1,1 +1,16 @@
+altgraph==0.17.4
+annotated-types==0.7.0
 bcrypt==4.3.0
+dnspython==2.7.0
+email_validator==2.2.0
+idna==3.10
+packaging==25.0
+pefile==2023.2.7
+pydantic==2.11.5
+pydantic_core==2.33.2
+pyinstaller==6.13.0
+pyinstaller-hooks-contrib==2025.4
+pywin32-ctypes==0.2.3
+setuptools==80.8.0
+typing-inspection==0.4.1
+typing_extensions==4.13.2

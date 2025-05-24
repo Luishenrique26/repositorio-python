@@ -7,7 +7,7 @@ class UserEntity:
     username: str
     email: str
     password: str
-    created_at: datetime
+    created_at: str
 
     def __init__(self, username: str, email: str, password: str):
         self.username = username

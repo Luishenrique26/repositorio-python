@@ -5,9 +5,12 @@ class TkinterBase:
     def __init__(self, master: Tk) -> None:
         self.master = master
 
-    def open_window(self, window=None, destroy=False):
+    def open_window(self, window=None, destroy=False, **kwargs):
         if not destroy:
             self.master.destroy()
         new_window = Tk()
+        if kwargs:
+            window(new_window, **kwargs)
+            return
         window(new_window)
         return

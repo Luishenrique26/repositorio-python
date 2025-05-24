@@ -1,8 +1,9 @@
 from tkinter import Button, Entry, Label, Tk, messagebox
+from pydantic import ValidationError
 from src.domain.dtos import UserDTO
 from src.services import UserService
-from .activies import ListActivies
 from src.common.base import TkinterBase
+from .activies import ListActivies
 
 
 class Register(TkinterBase):
@@ -35,16 +36,25 @@ class Register(TkinterBase):
         self.button_register.pack(pady=20)
 
     def register(self):
-        data = UserDTO.create(
-            self.entry_username.get(), self.entry_email.get(), self.entry_password.get()
-        )
-
         try:
-            data.validate()
+            data = UserDTO(
+                username=self.entry_username.get(),
+                email=self.entry_email.get(),
+                password=self.entry_password.get(),
+            )
+
             service = UserService()
             service.create_user(data)
             messagebox.showinfo("Cadastro bem-sucedido", f"Bem-vindo, {data.username}!")
             self.master.destroy()
             self.open_window(ListActivies, destroy=True)
-        except ValueError as e:
-            messagebox.showerror("Cadastro falhou", f"{e}")
+        except (ValidationError,ValueError) as e:
+            if type(e) == ValueError:
+                messagebox.showerror("Erro", f"{e}")
+            else:
+                dict = {
+                    f"{error['loc'][0]}_message": error["msg"].replace("Value error, ", "")
+                    for error in e.errors()
+                }
+                for message in dict.values():
+                    messagebox.showerror("Cadastro falhou", f"{message}")

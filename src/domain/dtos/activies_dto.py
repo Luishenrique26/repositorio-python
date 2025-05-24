@@ -1,31 +1,71 @@
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
+from pydantic import BaseModel, field_validator
+
+from src.common.utils import str_to_date, str_to_datetime
 
 
-@dataclass
-class ActiviesDTO:
+class ActiviesDTO(BaseModel):
     name: str
-    start_date: str | date
-    end_date: str | date
+    start_date: date
+    end_date: date
 
-    @staticmethod
-    def create(
-        name: str, start_date: str | date, end_date: str | date
-    ) -> "ActiviesDTO":
-        return ActiviesDTO(name, start_date, end_date)
-
-    def validate(self) -> None:
-        if not self.name:
+    @field_validator("name", mode="before")
+    def validate_name(cls, value: str) -> str:
+        if not value or value.strip() == "":
             raise ValueError("Campo de nome de atividade é obrigatório")
 
-        if not self.start_date:
-            raise ValueError("Campo de data de inicio é obrigatório")
+        return value
 
-        if len(self.start_date) < 8 or len(self.start_date) > 8:
-            raise ValueError("Campo de data de inicio é invalido")
+    @field_validator("start_date", mode="before")
+    def validate_start_date(cls, value: date) -> date:
+        if isinstance(value, str):
+            if not value:
+                raise ValueError("Campo de data de início é obrigatório")
 
-        if not self.end_date:
-            raise ValueError("Campo de data de fim é obrigatório")
+            if len(value) != 10:
+                raise ValueError("Campo de data de início é inválido")
 
-        if len(self.end_date) < 8 or len(self.end_date) > 8:
-            raise ValueError("Campo de data de fim é invalido")
+            try:
+                return str_to_date(value, "%d/%m/%Y")
+            except ValueError:
+                raise ValueError("Campo de data de início é inválido")
+
+        return value
+
+    @field_validator("end_date", mode="before")
+    def validate_end_date(cls, value: date) -> date:
+        if isinstance(value, str):
+            if not value:
+                raise ValueError("Campo de data de fim é obrigatório")
+
+            if len(value) != 10:
+                raise ValueError("Campo de data de fim é inválido")
+
+            try:
+                return str_to_date(value, "%d/%m/%Y")
+            except ValueError:
+                raise ValueError("Campo de data de fim é inválido")
+
+        return value
+
+
+class UpdateActivitieDTO(ActiviesDTO):
+    activitie_id: int
+    created_at: datetime
+
+    @field_validator("created_at", mode="before")
+    def validate_created_at(cls, value: datetime) -> datetime:
+        if isinstance(value, str):
+            if not value:
+                raise ValueError("Campo de data de criação é obrigatório")
+
+            if len(value) != 19:
+                raise ValueError("Campo de data de criação é inválido")
+
+            try:
+                return str_to_datetime(value, "%Y-%m-%d - %H:%M:%S.%f")
+            except ValueError:
+                raise ValueError("Campo de data de criação é inválido")
+
+        return value

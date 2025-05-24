@@ -1,4 +1,5 @@
 from tkinter import Button, Entry, Label, Tk, messagebox
+from pydantic import ValidationError
 from src.domain.dtos import LoginDTO
 from src.services import AuthService
 from .activies import ListActivies
@@ -36,14 +37,23 @@ class Login(TkinterBase):
         self.button_register.pack(pady=20)
 
     def login(self):
-        data = LoginDTO.create(self.entry_username.get(), self.entry_password.get())
-
         try:
-            data.validate()
+            data = LoginDTO(
+                username=self.entry_username.get(), password=self.entry_password.get()
+            )
+
             service = AuthService()
             service.login(data.username, data.password)
             messagebox.showinfo("Login bem-sucedido", f"Bem-vindo {data.username}!")
             self.master.destroy()
             self.open_window(ListActivies, destroy=True)
-        except ValueError as e:
-            messagebox.showerror("Login falhou", f"{e}")
+        except (ValidationError,ValueError) as e:
+            if type(e) == ValueError:
+                messagebox.showerror("Erro", f"{e}")
+            else:
+                dict = {
+                    f"{error['loc'][0]}_message": error["msg"].replace("Value error, ", "")
+                    for error in e.errors()
+                }
+                for message in dict.values():
+                    messagebox.showerror("Login falhou", f"{message}")

@@ -1,18 +1,20 @@
-from dataclasses import dataclass
+from pydantic import BaseModel, field_validator
 
 
-@dataclass
-class LoginDTO:
+class LoginDTO(BaseModel):
     username: str
     password: str
 
-    @staticmethod
-    def create(username: str, password: str) -> "LoginDTO":
-        return LoginDTO(username, password)
-
-    def validate(self) -> None:
-        if not self.username:
+    @field_validator("username")
+    def validate_username(cls, value: str) -> str:
+        if not value or value.strip() == "":
             raise ValueError("Campo de nome de usuário obrigatório")
 
-        if not self.password:
+        return value
+
+    @field_validator("password")
+    def validate_password(cls, value: str) -> str:
+        if not value or value.strip() == "":
             raise ValueError("Campo de senha obrigatória")
+
+        return value
